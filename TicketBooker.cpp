@@ -263,12 +263,6 @@ void sort_queue1_pool_and_push_to_queue1()
 }
 
 
-void update_priority()
-{
-    if (queue1.front()->get_times_of_run() % 2 == 0)
-        queue1.front()->plus_update_priority();  // = priority ++
-}
-
 
 
 void works()  
@@ -287,10 +281,6 @@ void works()
     // 时钟
     while(true) // TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER
     {   
-        
-
-
-
 
         if(check_any_new_arrival_customer_each_5_sec() == true) // somebody arrive right now
         {
@@ -306,7 +296,8 @@ void works()
 
 
         queue1_ = queue1;
-        cout<<"queue1 when timer is["<<timer<<"]::::::::::::";
+        // cout<<"queue1 front: ["<<queue1_.front()->get_customerID()<<"]'s times_of_run is "<<queue1_.front()->get_times_of_run(); //cannot use
+        cout<<"queue1 when timer is ["<<timer<<"]::::::::::::";
         while (!queue1_.empty())
         {
             cout << queue1_.front()->get_customerID() << " ";
@@ -315,7 +306,7 @@ void works()
         cout<<endl;
 
 
-        cout<<"queue2 when timer is["<<timer<<"]::::::::::::";
+        cout<<"queue2 when timer is ["<<timer<<"]::::::::::::";
         for (int i=0; i<queue2.size(); i++)
         {
             cout<<queue2[i]->get_customerID()<<" ";
@@ -342,8 +333,6 @@ void works()
         
         if (queue1.size()>0)/////////// queue1 queue1 queue1 queue1 queue1 queue1 queue1 queue1 queue1 queue1 queue1 queue1 queue1
         {
-            // cout<<"current queue1. front()"<<queue1.front()->get_customerID()<<endl;
-
 
             if(queue1.front()->get_priority() == 4)
             {
@@ -410,7 +399,16 @@ void works()
     
                 queue1.front()->set_end(timer);
                 // cout<<"||||||customer name:"<<queue1.front()->get_customerID()<<" | remain ticket num:"<<queue1.front()->get_ticket_num()<<"| N: "<<N<<endl;
-                update_priority();
+                
+                if (queue1.front()->get_times_of_run() % 2 == 0)
+                {
+                    queue1.front()->plus_update_priority();  // = priority ++
+                    cout<<"(<=N) "<<queue1.front()->get_customerID()<<" times_of_run is: "<<queue1.front()->get_times_of_run();
+                    cout<<" and it's priority is updated! Now is "<<queue1.front()->get_priority()<<". ";
+                }
+                    
+
+                
                 cout<<"                                         pushed "<<queue1.front()->get_customerID()<<" into output_queue.";
                 output_queue.push(queue1.front()); // result goes into output_queue
                 queue1.pop();
@@ -444,19 +442,42 @@ void works()
 
                     timer += 5;  // no problem
 
-                    if(check_any_new_arrival_customer_each_5_sec() == true || queue1_pool.size() > 0) // somebody arrive right now
+                    if(check_any_new_arrival_customer_each_5_sec() == true) // somebody arrive right now
                     {
                         cout<<"(4) customer comes in when timer is "<< timer<<endl;
+                        sort_queue1_pool_and_push_to_queue1();
+                    }
+
+                    if(queue1_pool.size() > 0) // somebody arrive right now
+                    {
+                        cout<<"(4) customer comes in from queue2 when timer is "<< timer<<endl;
                         sort_queue1_pool_and_push_to_queue1();
                     }
                 }
 
                 cout<<"after excution |customer name:"<<queue1.front()->get_customerID()<<"| processed ticket: "<<N<<" | remain ticket:"<<queue1.front()->get_ticket_num()<<endl;
                 
-                update_priority();
-                cout<<queue1.front()->get_customerID()<<" head->tail"<<endl;
-                queue1.push(queue1.front());
-                queue1.pop();
+                if (queue1.front()->get_times_of_run() % 2 == 0)
+                {
+                    queue1.front()->plus_update_priority();  // = priority ++
+                    cout<<"(>N) "<<queue1.front()->get_customerID()<<" times_of_run is: "<<queue1.front()->get_times_of_run();
+                    cout<<" and it's priority is updated! Now is "<<queue1.front()->get_priority()<<". ";
+                    
+                }
+
+                if(queue1.front()->get_priority() == 4)
+                {
+                    cout<<queue1.front()->get_customerID()<<" qu le queue2."<<endl;
+                    //move queue1 front into queue2
+                    queue2.push_back(queue1.front());
+                    queue1.pop();
+                }else
+                {
+                    cout<<queue1.front()->get_customerID()<<" head->tail"<<endl;
+                    queue1.push(queue1.front());
+                    queue1.pop();
+                }
+                
                 
             }else
             {
@@ -492,7 +513,7 @@ void works()
             // cout<<endl;
 
 
-            queue2.front()->add_one_time_of_run(); //times of tun + 1
+            // queue2.front()->add_one_time_of_run(); //times of tun + 1
 
             if (queue2.front()->get_times_of_run() == 1) //if it is first run
                 queue2.front()->set_ready_time(timer); //record ready time
@@ -536,8 +557,6 @@ void works()
             if (if_promotion) //if promotion occur, skip current while loop process, but stay in while loop (timer)
                 continue; // continue while loop
 
-            // timer += 5;
-            
             
             if(queue2.front()->get_ticket_num() == 0)
             {
