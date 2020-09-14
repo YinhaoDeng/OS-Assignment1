@@ -252,7 +252,7 @@ void sort_queue1_pool_and_push_to_queue1()
 
             // cout<<"most prior customer found at index "<<most_prior_customer_idx<<endl<<endl;
             queue1.push(queue1_pool[most_prior_customer_idx]);  //缓存池进queue1
-            cout<<"I pushed "<<queue1_pool[most_prior_customer_idx]->get_customerID()<<" into queue1"<<endl;
+            cout<<"                     (I pushed "<<queue1_pool[most_prior_customer_idx]->get_customerID()<<" into queue1)"<<endl;
             queue1_pool.erase(queue1_pool.begin()+most_prior_customer_idx);
 
             // cout<<"most prior customer found!  at index "<<most_prior_customer_idx<<endl<<endl;
@@ -270,6 +270,7 @@ void update_priority()
 }
 
 
+
 void works()  
 {   
     timer = customer_vec[0]->get_arrival_time();
@@ -282,10 +283,14 @@ void works()
         sort_queue1_pool_and_push_to_queue1();
     }
 
-
+    queue<Customer*> queue1_;
     // 时钟
     while(true) // TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER
     {   
+        
+
+
+
 
         if(check_any_new_arrival_customer_each_5_sec() == true) // somebody arrive right now
         {
@@ -295,22 +300,40 @@ void works()
 
         if(queue1_pool.size() > 0)
         {
-            cout<<"push from queue1_pool to queue1 when time ["<< timer<<"]"<<endl;
+            cout<<"push from queue1_pool to queue1 when time ["<< timer<<"]    ";
             sort_queue1_pool_and_push_to_queue1();
         }
+
+
+        queue1_ = queue1;
+        cout<<"queue1 when timer is["<<timer<<"]::::::::::::";
+        while (!queue1_.empty())
+        {
+            cout << queue1_.front()->get_customerID() << " ";
+            queue1_.pop();
+        }
+        cout<<endl;
+
+
+        cout<<"queue2 when timer is["<<timer<<"]::::::::::::";
+        for (int i=0; i<queue2.size(); i++)
+        {
+            cout<<queue2[i]->get_customerID()<<" ";
+        }
+        cout<<endl;
+
+
     
         // push customers from queue1_pool and sort queue1
-        if(queue1_pool.size()>=0)
+        if(queue1_pool.size()>0)
         {
-            // cout<<"      Who are in queue1_pool?    : ";
+            cout<<"      Who are in queue1_pool?    : ";
             for(int i=0; i<queue1_pool.size(); i++)
             {
                 cout<<queue1_pool[i]->get_customerID()<<" ";
             }
             cout<<endl;
             // break;
-            // sort_queue1_pool_and_push_to_queue1();
-            cout<<"/////////////////////////////////////////////////"<<endl;
         }else
         {
             // cout<<"         |queue1_pool is empty.|                "<<endl;
@@ -344,7 +367,6 @@ void works()
 
 
             // sell ticket
-            // cout<<"calculating N"<<endl;
             int N = ticket_quota(queue1.front()->get_priority());  //sell N tickets to customer
 
             if(queue1.front()->get_ticket_num()<=N) //ticket require < N
@@ -368,12 +390,15 @@ void works()
                             queue2[i] -> reset_span_time_in_queue2(); // reset span time in queue2 as 0
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
-                                if_there_is_promotion_and_push_to_queue1_pool(queue2[i], i, queue1_pool, queue2);
+                                queue1_pool.push_back(queue2[i]);
+                                cout<<"(1) promotion occur, push"<<queue2[i]->get_customerID()<<" into queue1_pool"<<endl;
+                                cout<<"erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
+                                queue2.erase(queue2.begin()+i); // bug
                             }
                         }
                     }
 
-                    
+
                     timer += 5; //no problem
                     
                     if(check_any_new_arrival_customer_each_5_sec() == true) // somebody arrive right now
@@ -410,23 +435,26 @@ void works()
                             queue2[i] -> reset_span_time_in_queue2(); // reset span time in queue2 as 0
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
-                                if_there_is_promotion_and_push_to_queue1_pool(queue2[i], i, queue1_pool, queue2);
+                                queue1_pool.push_back(queue2[i]);
+                                cout<<"(2) promotion occur, push "<<queue2[i]->get_customerID()<<" into queue1_pool erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
+                                queue2.erase(queue2.begin()+i); // bug
                             }
                         }
                     }
 
                     timer += 5;  // no problem
 
-                    if(check_any_new_arrival_customer_each_5_sec() == true) // somebody arrive right now
+                    if(check_any_new_arrival_customer_each_5_sec() == true || queue1_pool.size() > 0) // somebody arrive right now
                     {
                         cout<<"(4) customer comes in when timer is "<< timer<<endl;
                         sort_queue1_pool_and_push_to_queue1();
                     }
                 }
 
-                cout<<"||||||customer name:"<<queue1.front()->get_customerID()<<" | remain ticket:"<<queue1.front()->get_ticket_num()<<"| processed ticket: "<<N<<endl;
+                cout<<"after excution |customer name:"<<queue1.front()->get_customerID()<<"| processed ticket: "<<N<<" | remain ticket:"<<queue1.front()->get_ticket_num()<<endl;
                 
                 update_priority();
+                cout<<queue1.front()->get_customerID()<<" head->tail"<<endl;
                 queue1.push(queue1.front());
                 queue1.pop();
                 
@@ -448,7 +476,7 @@ void works()
                 }
             }
             
-            cout<<endl<<"important time: "<<timer<<endl;
+            cout<<endl<<"important time in queue1: "<<timer<<endl;
 
 
         }
@@ -456,12 +484,12 @@ void works()
         else if (queue1.size()==0 && queue2.size() >0)  //执行queue2 if queue1 is empty and queue2 has customers waiting, we excute queue2
         {
 
-            cout<<"queue2 when timer is["<<timer<<"]::::::::::::";
-            for (int i=0; i<queue2.size(); i++)
-            {
-                cout<<queue2[i]->get_customerID()<<" ";
-            }
-            cout<<endl;
+            // cout<<"queue2 when timer is["<<timer<<"]::::::::::::";
+            // for (int i=0; i<queue2.size(); i++)
+            // {
+            //     cout<<queue2[i]->get_customerID()<<" ";
+            // }
+            // cout<<endl;
 
 
             queue2.front()->add_one_time_of_run(); //times of tun + 1
@@ -476,7 +504,7 @@ void works()
             queue2.front()->update_ticket_num(1); // 每次只卖1张票
             queue2.front()->update_running_time(5);
 
-            timer += 5;
+            
 
 
             bool if_promotion = false;  //如果晋升现象出现
@@ -491,12 +519,18 @@ void works()
                     if(queue2[i]->get_priority()==3)  //queue2有人跳车
                     {
                         // push queue2[i] into queue1_pool
-                        if (if_there_is_promotion_and_push_to_queue1_pool(queue2[i], i, queue1_pool, queue2))
-                            if_promotion = true; //reset the flag
+                        if(queue2[i]->get_priority()==3)  //queue2有人跳车
+                        {
+                            queue1_pool.push_back(queue2[i]);
+                            cout<<"(3)promotion occur! push "<<queue2[i]->get_customerID()<<" into queue1_pool and erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
+                            queue2.erase(queue2.begin()+i); // bug
+                        }
                         //潜在bug!!!!!!!!!!!!!!!!!!!!!!!!!!!! erase野指针
                     }
                 }
             }
+
+            timer += 5;
 
 
             if (if_promotion) //if promotion occur, skip current while loop process, but stay in while loop (timer)
@@ -519,14 +553,11 @@ void works()
                 output_queue.push(queue2.front());
                 queue2.erase(queue2.begin());
             }
-            
-
-
         }else
         {
             break;
         }
-        
+        cout<<"important time in queue2:"<<timer<<endl;
        
     }
     cout<<endl<<".................finish excution......................."<<endl;

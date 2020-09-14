@@ -187,16 +187,5 @@ vector<Customer*> sort_queue2(vector<Customer*> queue2_) // sort queue2 based on
 }
 
 
-bool if_there_is_promotion_and_push_to_queue1_pool(Customer* customer, int i, vector<Customer*> queue1_pool_, vector<Customer*> queue2_)
-{
-    if(customer->get_priority() == 3)
-    {
-        queue1_pool_.push_back(customer);
-        cout<<"promotion occur, push"<<customer->get_customerID()<<" into queue1_pool"<<endl;
-        queue2_.erase(queue2_.begin()+i);
 
-        return true;
-    }else
-        return false;
-}
 
