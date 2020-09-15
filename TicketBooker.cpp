@@ -191,6 +191,9 @@ void input()
 }
 
 
+
+
+
 bool check_any_new_arrival_customer_each_5_sec()
 {
     if(customer_vec[0]->get_arrival_time() != timer || customer_vec.size()==0)
@@ -235,11 +238,17 @@ bool check_any_new_arrival_customer_each_5_sec()
 void sort_queue1_pool_and_push_to_queue1()
 {
     int size = queue1_pool.size();
-    // cout<<"queue1_pool.size()"<<size<<endl;
+    if( size < 0)
+        cout<<"ERROR! queue1_pool size <0 !"<<endl;
+    else
+        cout<<"in function sort_queue1_pool_and_push_to_queue1(), queue1_pool size: "<<size<<endl;
+    
+
+ 
     for (int i=0; i<size; i++)
     {
-
-        int most_prior_customer_idx = find_the_most_prior_customer(queue1_pool); // push the customer with highest priority into the queue1
+        int most_prior_customer_idx = find_the_most_prior_customer_in_queue1_pool(queue1_pool);  // queue1 use
+        // push the customer with highest priority into the queue1
         // cout<<"most_prior_customer_idx: "<<most_prior_customer_idx<<endl;
         if (most_prior_customer_idx == -1 ||queue1_pool[most_prior_customer_idx]->get_customerID()=="NULL")
         {
@@ -379,6 +388,8 @@ void works()
                             queue2[i] -> reset_span_time_in_queue2(); // reset span time in queue2 as 0
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
+                                queue2[i]->set_checked(false);
+                                queue2[i]->reset_times_of_run();
                                 queue1_pool.push_back(queue2[i]);
                                 cout<<"(1) promotion occur, push"<<queue2[i]->get_customerID()<<" into queue1_pool"<<endl;
                                 cout<<"erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
@@ -433,25 +444,27 @@ void works()
                             queue2[i] -> reset_span_time_in_queue2(); // reset span time in queue2 as 0
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
+                                queue2[i]->set_checked(false);
+                                queue2[i]->reset_times_of_run();
                                 queue1_pool.push_back(queue2[i]);
                                 cout<<"(2) promotion occur, push "<<queue2[i]->get_customerID()<<" into queue1_pool erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
-                                queue2.erase(queue2.begin()+i); // bug
+                                queue2.erase(queue2.begin()+i); //
                             }
                         }
                     }
-
+                    
 
                     if(check_any_new_arrival_customer_each_5_sec() == true) // somebody arrive right now
                     {
-                        cout<<"(4) customer comes in when timer is "<< timer<<endl;
+                        cout<<"(4) new customer comes in when timer is "<< timer<<endl;
                         sort_queue1_pool_and_push_to_queue1();
                     }
-                    timer += 5;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  AWESOME!!!!!!!!!!!!!!!!!!!!!
+                    timer += 5;  // !!!!!!!!!!!  AWESOME!!!!
 
                     if(queue1_pool.size() > 0) // somebody arrive right now
                     {
-                        cout<<"(4) customer comes in from queue2 when timer is "<< timer<<endl;
-                        sort_queue1_pool_and_push_to_queue1();
+                        sort_queue1_pool_and_push_to_queue1();  ///     BUG HERE!
+                        cout<<"(4) customer comes from queue1_pool to queue1 when timer is "<< timer<<endl;
                     }
                 }
 
@@ -460,9 +473,8 @@ void works()
                 if (queue1.front()->get_times_of_run() % 2 == 0)
                 {
                     queue1.front()->plus_update_priority();  // = priority ++
-                    cout<<"(>N) "<<queue1.front()->get_customerID()<<" times_of_run is: "<<queue1.front()->get_times_of_run();
+                    cout<<"(>N) after excution, "<<queue1.front()->get_customerID()<<" times_of_run is: "<<queue1.front()->get_times_of_run();
                     cout<<" and it's priority is updated! Now is "<<queue1.front()->get_priority()<<". ";
-                    
                 }
 
                 if(queue1.front()->get_priority() == 4)
@@ -512,13 +524,15 @@ void works()
             // }
             // cout<<endl;
 
+            queue2.front()->add_one_time_of_run(); //BUG
 
-            // queue2.front()->add_one_time_of_run(); //times of tun + 1
+
 
             if (queue2.front()->get_times_of_run() == 1) //if it is first run
+            {
+                cout<<queue2.front()->get_customerID()<<"  ready time = current timer = "<<timer<<endl;
                 queue2.front()->set_ready_time(timer); //record ready time
-                // cout<<queue2.front()->get_customerID()<<"  ready time = current timer = "<<timer<<endl;
-
+            }    
 
             queue2 = sort_queue2(queue2);
 
@@ -542,6 +556,8 @@ void works()
                         // push queue2[i] into queue1_pool
                         if(queue2[i]->get_priority()==3)  //queue2有人跳车
                         {
+                            queue2[i]->set_checked(false);
+                            queue2[i]->reset_times_of_run();
                             queue1_pool.push_back(queue2[i]);
                             cout<<"(3)promotion occur! push "<<queue2[i]->get_customerID()<<" into queue1_pool and erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                             queue2.erase(queue2.begin()+i); // bug
@@ -587,9 +603,6 @@ void output()
 {    
     int i;
     cout<<"name   arrival   end   ready   running   waiting"<<endl;    
-    // for(i=0; i<result.size(); i++) // every result    
-
-    // cout<<"queue output (from head to tail): "<<endl;
     while (!output_queue.empty())
     {
         cout<<output_queue.front()->get_customerID()<<"         ";

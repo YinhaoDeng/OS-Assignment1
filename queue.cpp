@@ -34,7 +34,66 @@ vector<Customer*> sort_customer_vec_based_on_arrival_time(vector<Customer*> cust
 
 
 
-int find_the_most_prior_customer(vector<Customer*> vec)  // queue1 use
+// int find_the_most_prior_customer(vector<Customer*> vec)  // queue1 use
+// {
+//     int min_priority = 1000;
+//     int min_index = -1;
+//     int min_arrival_time = 9000;
+//     int min_customerID = 1000;
+//     int ID = -1;
+
+   
+//     //get minimum priority
+//     for (int index=0; index < vec.size(); index++)  // array_size_: global variable
+//     {
+//         if (vec[index]->get_priority() < min_priority && vec[index]->get_checked()==false)
+//         {
+//             min_priority = vec[index]->get_priority();
+//             min_index = index;
+//         }
+//     }
+
+//     //get minimum arrival time
+//     for (int index_ = 0; index_ < vec.size(); index_++)
+//     {
+//         if(vec[index_]->get_priority() == min_priority && vec[index_]->get_arrival_time() < min_arrival_time &&vec[index_]-> get_checked()==false)
+//         {
+//             min_arrival_time = vec[index_]->get_arrival_time();
+//             min_index = index_;
+//         }
+//     }
+    
+//     //get minimim customerID
+//     for (int index__ = 0; index__ < vec.size(); index__++)
+//     {
+//         // cout<<"index__"<<index__<<endl;
+//         ID = vec[index__]->get_customerID()[1] - '0';
+//         // cout<<"ID"<<ID<<endl;
+
+//         if(vec[index__]->get_priority() == min_priority && vec[index__]->get_arrival_time() == min_arrival_time&& ID < min_customerID &&vec[index__]-> get_checked()==false)
+//         {
+//             // min_arrival_time = arr[index__]->get_arrival_time();
+//             min_customerID = ID;
+//             min_index = index__;
+//         }
+//     }
+//     cout<<"I am in find_the_most_prior_customer()"<<endl;
+
+//     // cout<<"min_index: "<<min_index<<endl;
+    
+//     if(vec[min_index]->get_checked()==true||min_index==-1)
+//     {
+//         cout<<"min index not found!"<<endl;
+//         return -1; //error 
+//     }
+//     else    
+//     {
+//         vec[min_index]->set_checked(true);
+//         return min_index;
+//     }
+// }
+
+int find_the_most_prior_customer_in_queue1_pool(vector <Customer*> queue1_pool_)  // queue1 use
 {
     int min_priority = 1000;
     int min_index = -1;
@@ -42,34 +101,35 @@ int find_the_most_prior_customer(vector<Customer*> vec)  // queue1 use
     int min_customerID = 1000;
     int ID = -1;
 
+
     //get minimum priority
-    for (int index=0; index < vec.size(); index++)  // array_size_: global variable
+    for (int index=0; index < queue1_pool_.size(); index++)  // array_size_: global variable
     {
-        if (vec[index]->get_priority() < min_priority && vec[index]->get_checked()==false)
+        if (queue1_pool_[index]->get_priority() < min_priority && queue1_pool_[index]->get_checked()==false)
         {
-            min_priority = vec[index]->get_priority();
+            min_priority = queue1_pool_[index]->get_priority();
             min_index = index;
         }
     }
 
     //get minimum arrival time
-    for (int index_ = 0; index_ < vec.size(); index_++)
+    for (int index_ = 0; index_ < queue1_pool_.size(); index_++)
     {
-        if(vec[index_]->get_priority() == min_priority && vec[index_]->get_arrival_time() < min_arrival_time &&vec[index_]-> get_checked()==false)
+        if(queue1_pool_[index_]->get_priority() == min_priority && queue1_pool_[index_]->get_arrival_time() < min_arrival_time &&queue1_pool_[index_]-> get_checked()==false)
         {
-            min_arrival_time = vec[index_]->get_arrival_time();
+            min_arrival_time = queue1_pool_[index_]->get_arrival_time();
             min_index = index_;
         }
     }
 
     //get minimim customerID
-    for (int index__ = 0; index__ < vec.size(); index__++)
+    for (int index__ = 0; index__ < queue1_pool_.size(); index__++)
     {
         // cout<<"index__"<<index__<<endl;
-        ID = vec[index__]->get_customerID()[1] - '0';
+        ID = queue1_pool_[index__]->get_customerID()[1] - '0';
         // cout<<"ID"<<ID<<endl;
 
-        if(vec[index__]->get_priority() == min_priority && vec[index__]->get_arrival_time() == min_arrival_time&& ID < min_customerID &&vec[index__]-> get_checked()==false)
+        if(queue1_pool_[index__]->get_priority() == min_priority && queue1_pool_[index__]->get_arrival_time() == min_arrival_time&& ID < min_customerID &&queue1_pool_[index__]-> get_checked()==false)
         {
             // min_arrival_time = arr[index__]->get_arrival_time();
             min_customerID = ID;
@@ -77,15 +137,18 @@ int find_the_most_prior_customer(vector<Customer*> vec)  // queue1 use
         }
     }
 
+    // cout<<"I am in find_the_most_prior_customer()"<<endl;
 
-    // cout<<"min_index: "<<min_index<<endl;
-    
-    if(vec[min_index]->get_checked()==true||min_index==-1)
+    cout<<"min_index: "<<min_index<<endl;
+    cout<<queue1_pool_[min_index]->get_checked()<<endl;
+    if(queue1_pool_[min_index]->get_checked()==true||min_index==-1)
+    {
+        cout<<"min index not found!"<<endl;
         return -1; //error 
+    }
     else    
     {
-        // cout<<"I reset if_check flag!"<<endl;
-        vec[min_index]->set_checked(true);
+        queue1_pool_[min_index]->set_checked(true);
         return min_index;
     }
 }
@@ -94,7 +157,7 @@ int find_the_most_prior_customer(vector<Customer*> vec)  // queue1 use
 int find_the_most_prior_customer_idx(vector<Customer*> customer_vec)  // and initialise original properties
 {
     // cout<<"q "<<q<<endl;
-    int most_prior_customer_idx = find_the_most_prior_customer(customer_vec); // push the customer with highest priority into the queue1
+    int most_prior_customer_idx = find_the_most_prior_customer_in_queue1_pool(customer_vec); // push the customer with highest priority into the queue1
     cout<<"most prior customer found!  at index "<<most_prior_customer_idx<<endl;
     if (most_prior_customer_idx == -1 ||customer_vec[most_prior_customer_idx]->get_customerID()=="NULL")
     {

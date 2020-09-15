@@ -96,7 +96,7 @@ public:
     void update_ready_time(int added_time) {ready_time += added_time;}
     void update_running_time(int added_running_time) {running += added_running_time;}
     void update_span_time_in_queue2(int added_span_time) {span_time_in_queue2 += added_span_time;}
-
+    void reset_times_of_run() {times_of_run = 0;}
     void update_time_since_last_run(int added_time) {time_since_last_run += added_time;}  // queue2
     void reset_time_since_last_run(int time_since_last_run_)  //reset time_since_last_run to 0
     {
