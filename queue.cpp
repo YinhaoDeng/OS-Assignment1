@@ -125,22 +125,15 @@ int find_the_most_prior_customer_in_queue1_pool(vector <Customer*> queue1_pool_)
     //get minimim customerID
     for (int index__ = 0; index__ < queue1_pool_.size(); index__++)
     {
-        // cout<<"index__"<<index__<<endl;
         ID = queue1_pool_[index__]->get_customerID()[1] - '0';
-        // cout<<"ID"<<ID<<endl;
 
         if(queue1_pool_[index__]->get_priority() == min_priority && queue1_pool_[index__]->get_arrival_time() == min_arrival_time&& ID < min_customerID &&queue1_pool_[index__]-> get_checked()==false)
         {
-            // min_arrival_time = arr[index__]->get_arrival_time();
             min_customerID = ID;
             min_index = index__;
         }
     }
 
-    // cout<<"I am in find_the_most_prior_customer()"<<endl;
-
-    cout<<"min_index: "<<min_index<<endl;
-    cout<<queue1_pool_[min_index]->get_checked()<<endl;
     if(queue1_pool_[min_index]->get_checked()==true||min_index==-1)
     {
         cout<<"min index not found!"<<endl;

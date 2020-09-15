@@ -249,7 +249,6 @@ void sort_queue1_pool_and_push_to_queue1()
     {
         int most_prior_customer_idx = find_the_most_prior_customer_in_queue1_pool(queue1_pool);  // queue1 use
         // push the customer with highest priority into the queue1
-        // cout<<"most_prior_customer_idx: "<<most_prior_customer_idx<<endl;
         if (most_prior_customer_idx == -1 ||queue1_pool[most_prior_customer_idx]->get_customerID()=="NULL")
         {
             break;
@@ -356,10 +355,11 @@ void works()
             queue1.front()->add_one_time_of_run();
             // cout<<"times of run:"<<queue1.front()->get_times_of_run()<<endl;
 
-            if (queue1.front()->get_times_of_run() == 1)
+            if (queue1.front()->get_times_of_run() == 1 && queue1.front()->get_if_first_run() == false )
             {
                 queue1.front()->set_ready_time(timer); //记录第一次头时间
-                cout<<queue1.front()->get_customerID()<<"  ready time = current timer = "<<timer<<endl;
+                queue1.front()->set_if_first_run(true); //reset flag
+                cout<<"*********************"<<queue1.front()->get_customerID()<<"  ready time = current timer = "<<timer<<endl;
             }
             
 
@@ -369,6 +369,8 @@ void works()
 
             if(queue1.front()->get_ticket_num()<=N) //ticket require < N
             {
+
+
                 cout<<"                                     CHU LAI LE: ------------------------>  "<<queue1.front()->get_customerID()<<endl;
                 int n = queue1.front()->get_ticket_num();///////////////不能缺少
                 for (int i=0; i<n; i++)
@@ -389,7 +391,6 @@ void works()
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
                                 queue2[i]->set_checked(false);
-                                queue2[i]->reset_times_of_run();
                                 queue1_pool.push_back(queue2[i]);
                                 cout<<"(1) promotion occur, push"<<queue2[i]->get_customerID()<<" into queue1_pool"<<endl;
                                 cout<<"erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
@@ -445,7 +446,6 @@ void works()
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
                                 queue2[i]->set_checked(false);
-                                queue2[i]->reset_times_of_run();
                                 queue1_pool.push_back(queue2[i]);
                                 cout<<"(2) promotion occur, push "<<queue2[i]->get_customerID()<<" into queue1_pool erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                                 queue2.erase(queue2.begin()+i); //
@@ -524,21 +524,20 @@ void works()
             // }
             // cout<<endl;
 
-            queue2.front()->add_one_time_of_run(); //BUG
+            // queue2.front()->add_one_time_of_run(); //BUG
 
-
-
-            if (queue2.front()->get_times_of_run() == 1) //if it is first run
-            {
-                cout<<queue2.front()->get_customerID()<<"  ready time = current timer = "<<timer<<endl;
-                queue2.front()->set_ready_time(timer); //record ready time
-            }    
 
             queue2 = sort_queue2(queue2);
 
             queue2.front()->update_ticket_num(1); // 每次只卖1张票
             queue2.front()->update_running_time(5);
 
+            if (queue2.front()->get_if_first_run() == false)
+            {
+                queue2.front()->set_ready_time(timer);
+                cout<<"########################"<<queue2.front()->get_customerID()<<"  ready time = current timer = "<<timer<<endl;
+                queue2.front()->set_if_first_run(true);
+            }
             
 
 
@@ -557,7 +556,6 @@ void works()
                         if(queue2[i]->get_priority()==3)  //queue2有人跳车
                         {
                             queue2[i]->set_checked(false);
-                            queue2[i]->reset_times_of_run();
                             queue1_pool.push_back(queue2[i]);
                             cout<<"(3)promotion occur! push "<<queue2[i]->get_customerID()<<" into queue1_pool and erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                             queue2.erase(queue2.begin()+i); // bug

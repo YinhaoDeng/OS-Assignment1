@@ -18,9 +18,9 @@ private:
     int original_priority;
     int original_ticket_num;  //never change the copy
 
-    int times_of_run = 0; // number of times it runs
+    int times_of_run = 0; // number of times it runs  ONLY USE IN QUEUE1
     int end = 0;
-    int ready_time = 7777; //when does the customer ready, all ticket required are addressed
+    int ready_time = 888; //when does the customer ready, all ticket required are addressed
     int running = 0;  // runnign time
     int waiting = 0; //waiting time
     bool if_first_run = false;
@@ -70,7 +70,6 @@ public:
     int get_time_since_last_run() {return time_since_last_run;}
     int get_span_time_in_queue2() {return span_time_in_queue2;}
 
-
     // set methods
     void set_customerID(string new_ID){customerID = new_ID;}
     void set_arrival_time(int new_arrival_time) {arrival_time=new_arrival_time;}
@@ -91,7 +90,7 @@ public:
 
     void set_end(int current_time) {end = current_time;}
     int get_end() {return end;}
-    void set_if_first_run() {if_first_run = true;}
+    void set_if_first_run(bool bool_) {if_first_run = bool_;}
 
     void update_ready_time(int added_time) {ready_time += added_time;}
     void update_running_time(int added_running_time) {running += added_running_time;}
