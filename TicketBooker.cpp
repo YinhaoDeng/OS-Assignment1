@@ -440,13 +440,13 @@ void works()
                         }
                     }
 
-                    timer += 5;  // no problem
 
                     if(check_any_new_arrival_customer_each_5_sec() == true) // somebody arrive right now
                     {
                         cout<<"(4) customer comes in when timer is "<< timer<<endl;
                         sort_queue1_pool_and_push_to_queue1();
                     }
+                    timer += 5;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  AWESOME!!!!!!!!!!!!!!!!!!!!!
 
                     if(queue1_pool.size() > 0) // somebody arrive right now
                     {
@@ -467,7 +467,7 @@ void works()
 
                 if(queue1.front()->get_priority() == 4)
                 {
-                    cout<<queue1.front()->get_customerID()<<" qu le queue2."<<endl;
+                    cout<<queue1.front()->get_customerID()<<" goes to queue2."<<endl;
                     //move queue1 front into queue2
                     queue2.push_back(queue1.front());
                     queue1.pop();
