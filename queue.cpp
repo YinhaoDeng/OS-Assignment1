@@ -32,6 +32,8 @@ vector<Customer*> sort_customer_vec_based_on_arrival_time(vector<Customer*> cust
 }
 
 
+
+
 int find_the_most_prior_customer_in_queue1_pool(vector <Customer*> queue1_pool_)  // queue1 use
 {
     int min_priority = 1000;
@@ -180,4 +182,21 @@ vector<Customer*> sort_queue2(vector<Customer*> queue2_) // sort queue2 based on
 
 
 
+
+
+
+
+
+
+
+
+bool check_if_every_customer_has_same_priority(vector<Customer*> queue1)
+{
+    for (int i=0; i<queue1.size();i++)
+    {
+        if (queue1[i]->get_priority() != queue1[0]->get_priority())
+            return false;
+    }
+    return true;
+}
 
