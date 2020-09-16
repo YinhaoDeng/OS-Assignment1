@@ -1,0 +1,202 @@
+Details(Just for debug):
+Time:20
+name arrival_time tickets_required running priority_number age/runs
+queue1
+queue2
+a0          20          82           0               5       0
+
+Time:40
+name arrival_time tickets_required running priority_number age/runs
+queue1
+queue2
+a1          40          38           0               5       0
+a0          20          78          20               5       0
+
+Time:230
+name arrival_time tickets_required running priority_number age/runs
+queue1
+queue2
+a4          50          44           0               4      80
+a2          80          75           0               4      50
+a3          90          76           0               4      40
+a0          20          78          20               4      90
+
+promote
+Time:240
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a0          20          78          20               3       0
+queue2
+a4          50          42          10               4       0
+a2          80          75           0               4      60
+a3          90          76           0               4      50
+
+promote
+promote
+Time:310
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a2          80          75           0               3       0
+a3          90          76           0               3       0
+a0          20          64          90               3       1
+queue2
+a4          50          42          10               4      70
+
+promote
+Time:380
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a3          90          76           0               3       0
+a0          20          64          90               3       1
+a4          50          42          10               3       0
+a2          80          61          70               3       1
+queue2
+
+Time:450
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a0          20          64          90               3       1
+a4          50          42          10               3       0
+a2          80          61          70               3       1
+a3          90          62          70               3       1
+queue2
+
+Time:520
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a4          50          42          10               3       0
+a2          80          61          70               3       1
+a3          90          62          70               3       1
+queue2
+a0          20          50         160               4       0
+
+Time:590
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a2          80          61          70               3       1
+a3          90          62          70               3       1
+a4          50          28          80               3       1
+queue2
+a0          20          50         160               4      70
+
+promote
+Time:660
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a3          90          62          70               3       1
+a4          50          28          80               3       1
+a0          20          50         160               3       0
+queue2
+a2          80          47         140               4       0
+
+Time:730
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a4          50          28          80               3       1
+a0          20          50         160               3       0
+queue2
+a2          80          47         140               4      70
+a3          90          48         140               4       0
+
+promote
+Time:800
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a0          20          50         160               3       0
+a2          80          47         140               3       0
+queue2
+a4          50          14         150               4       0
+a3          90          48         140               4      70
+
+promote
+Time:870
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a2          80          47         140               3       0
+a3          90          48         140               3       0
+a0          20          36         230               3       1
+queue2
+a4          50          14         150               4      70
+
+promote
+Time:940
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a3          90          48         140               3       0
+a0          20          36         230               3       1
+a4          50          14         150               3       0
+a2          80          33         210               3       1
+queue2
+
+Time:1010
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a0          20          36         230               3       1
+a4          50          14         150               3       0
+a2          80          33         210               3       1
+a3          90          34         210               3       1
+queue2
+
+Time:1080
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a4          50          14         150               3       0
+a2          80          33         210               3       1
+a3          90          34         210               3       1
+queue2
+a0          20          22         300               4       0
+
+Time:1150
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a2          80          33         210               3       1
+a3          90          34         210               3       1
+queue2
+a0          20          22         300               4      70
+
+promote
+Time:1220
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a3          90          34         210               3       1
+a0          20          22         300               3       0
+queue2
+a2          80          19         280               4       0
+
+Time:1290
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a0          20          22         300               3       0
+queue2
+a2          80          19         280               4      70
+a3          90          20         280               4       0
+
+promote
+Time:1360
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a2          80          19         280               3       0
+a0          20           8         370               3       1
+queue2
+a3          90          20         280               4      70
+
+promote
+Time:1430
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a0          20           8         370               3       1
+a3          90          20         280               3       0
+a2          80           5         350               3       1
+queue2
+
+Time:1470
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a3          90          20         280               3       0
+a2          80           5         350               3       1
+queue2
+
+Time:1540
+name arrival_time tickets_required running priority_number age/runs
+queue1
+a2   

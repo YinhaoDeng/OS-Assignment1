@@ -45,7 +45,9 @@ const int array_size = 15;
 Customer customer_0, customer_1, customer_2, customer_3, customer_4, customer_5, customer_6, customer_7, customer_8, customer_9;
 vector <Customer*> customer_vec;
 
-queue<Customer*> queue1; // high-priority queue   priority <=3
+// queue<Customer*> queue1; // high-priority queue   priority <=3
+vector<Customer*> queue1; // high-priority queue   priority <=3
+
 vector<Customer*> queue1_pool;
 vector<Customer*> queue2;// low-priority queue priority >=4
 
@@ -259,7 +261,7 @@ void sort_queue1_pool_and_push_to_queue1()
             queue1_pool[most_prior_customer_idx]->set_original_priority_num();
 
             // cout<<"most prior customer found at index "<<most_prior_customer_idx<<endl<<endl;
-            queue1.push(queue1_pool[most_prior_customer_idx]);  //缓存池进queue1
+            queue1.push_back(queue1_pool[most_prior_customer_idx]);  //缓存池进queue1
             cout<<"                     (I pushed "<<queue1_pool[most_prior_customer_idx]->get_customerID()<<" into queue1)"<<endl;
             queue1_pool.erase(queue1_pool.begin()+most_prior_customer_idx);
 
@@ -285,7 +287,6 @@ void works()
         sort_queue1_pool_and_push_to_queue1();
     }
 
-    queue<Customer*> queue1_;
     // 时钟
     while(true) // TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER
     {   
@@ -303,16 +304,14 @@ void works()
         }
 
 
-        queue1_ = queue1;
         // cout<<"queue1 front: ["<<queue1_.front()->get_customerID()<<"]'s times_of_run is "<<queue1_.front()->get_times_of_run(); //cannot use
+
         cout<<"queue1 when timer is ["<<timer<<"]::::::::::::";
-        while (!queue1_.empty())
+        for (int i=0; i<queue2.size(); i++)
         {
-            cout << queue1_.front()->get_customerID() << " ";
-            queue1_.pop();
+            cout<<queue2[i]->get_customerID()<<" ";
         }
         cout<<endl;
-
 
         cout<<"queue2 when timer is ["<<timer<<"]::::::::::::";
         for (int i=0; i<queue2.size(); i++)
@@ -348,7 +347,7 @@ void works()
 
                 //move queue1 front into queue2
                 queue2.push_back(queue1.front());
-                queue1.pop();
+                queue1.erase(queue1.begin());
             }
 
 
@@ -423,7 +422,7 @@ void works()
                 
                 cout<<"                                         pushed "<<queue1.front()->get_customerID()<<" into output_queue.";
                 output_queue.push(queue1.front()); // result goes into output_queue
-                queue1.pop();
+                queue1.erase(queue1.begin());
 
 
             }else if(queue1.front()->get_ticket_num()>N)  // ticket > N                       Normal case
@@ -482,12 +481,12 @@ void works()
                     cout<<queue1.front()->get_customerID()<<" goes to queue2."<<endl;
                     //move queue1 front into queue2
                     queue2.push_back(queue1.front());
-                    queue1.pop();
+                    queue1.erase(queue1.begin());
                 }else
                 {
                     cout<<queue1.front()->get_customerID()<<" head->tail"<<endl;
-                    queue1.push(queue1.front());
-                    queue1.pop();
+                    queue1.push_back(queue1.front());
+                    queue1.erase(queue1.begin());
                 }
                 
                 
@@ -588,7 +587,20 @@ void works()
             }
         }else
         {
-            break;
+            if(!queue1.empty()||!queue2.empty()|| timer<600)
+                {
+                    cout<<"manually timer +=5"<<endl;
+                    timer += 5;   //manually update timer
+                }else if(timer>1000)
+                {
+                    cout<<"break ***"<<endl;
+                    break;
+                }
+                else
+                {
+                    cout<<"break ***"<<endl;
+                    break;
+                }
         }
         cout<<"important time in queue2:"<<timer<<endl;
        
