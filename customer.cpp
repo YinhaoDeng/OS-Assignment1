@@ -7,8 +7,6 @@ using namespace std;
 class Customer
 {
 private:
-    bool if_check = false;
-
     string customerID = "NUll";
     int arrival_time=999;
     int priority=999;
@@ -51,9 +49,6 @@ public:
     }
 
     // get methods
-    bool get_checked() {return if_check;}
-    void set_checked(bool flag) {if_check=flag;}
-
     string get_customerID() const {return customerID;}
     int get_arrival_time() const {return arrival_time;}
     int get_priority() const {return priority;}

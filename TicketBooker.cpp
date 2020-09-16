@@ -39,18 +39,15 @@ using namespace std;
 #include "queue.cpp"
 
 
-const int array_size = 15;
+const int array_size = 20;
 // const int 
 // Customer* customer_arr[array_size];  // this can be seen as arrive order. array type must be Customer instead of string
-Customer customer_0, customer_1, customer_2, customer_3, customer_4, customer_5, customer_6, customer_7, customer_8, customer_9;
+Customer customer_0, customer_1, customer_2, customer_3, customer_4, customer_5, customer_6, customer_7, customer_8, customer_9,customer_10,customer_11,customer_12,customer_13,customer_14,customer_15,customer_16,customer_17,customer_18,customer_19,customer_20;
 vector <Customer*> customer_vec;
 
-// queue<Customer*> queue1; // high-priority queue   priority <=3
 vector<Customer*> queue1; // high-priority queue   priority <=3
-
 vector<Customer*> queue1_pool;
 vector<Customer*> queue2;// low-priority queue priority >=4
-
 queue<Customer*> output_queue;
 
 // 时钟 clock
@@ -67,25 +64,6 @@ void initial()
         customerID="", arrival_time="", priority="", age="", ticket_num="";
         
         cin>>customerID>>arrival_time>>priority>>age>>ticket_num;
-
-
-        // string customer = "customer";
-        // int i = 0;
-        // string customer_name = customer + to_string(i);
-        // Customer customer_name;
-
-        //vector part
-        // if(customerID == ""||arrival_time==""||priority=="")
-        // {
-        //     Customer customer = Customer(); 
-        //     customer_vec.push_back(&customer);
-        //     // delete &customer;
-        // }else
-        // {
-        //     Customer customer = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
-        //     customer_vec.push_back(&customer);
-        //     // delete &customer;
-        // }
 
         //array part
         if (customer_arr_idx==0&&priority!="")
@@ -128,9 +106,53 @@ void initial()
         {    
             customer_9 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
             customer_vec.push_back(&customer_9);
+        }else if(customer_arr_idx==10&&priority!="")
+        {    
+            customer_10 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_10);
+        }else if(customer_arr_idx==11&&priority!="")
+        {    
+            customer_11 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_11);
+        }else if(customer_arr_idx==12&&priority!="")
+        {    
+            customer_12 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_12);
+        }else if(customer_arr_idx==13&&priority!="")
+        {    
+            customer_13 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_13);
+        }else if(customer_arr_idx==14&&priority!="")
+        {    
+            customer_14 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_14);
+        }else if(customer_arr_idx==15&&priority!="")
+        {    
+            customer_15 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_15);
+        }else if(customer_arr_idx==16&&priority!="")
+        {    
+            customer_16 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_16);
+        }else if(customer_arr_idx==17&&priority!="")
+        {    
+            customer_17 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_17);
+        }else if(customer_arr_idx==18&&priority!="")
+        {    
+            customer_18 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_18);
+        }else if(customer_arr_idx==19&&priority!="")
+        {    
+            customer_19 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_19);
+        }else if(customer_arr_idx==20&&priority!="")
+        {    
+            customer_20 = Customer(customerID, stoi(arrival_time), stoi(priority), stoi(age), stoi(ticket_num));
+            customer_vec.push_back(&customer_20);
         }else // prevent stoi error
         {
-            customer_vec.push_back(&customer_9);
+            customer_vec.push_back(&customer_20);
         }
         
 
@@ -174,25 +196,7 @@ void initial()
 
 void input()
 { 
-    // cout<<"queue1 (from head to tail): ";
-    // while (!queue1.empty())
-    // {
-    //     cout << queue1.front()->get_customerID() << " ";
-    //     queue1.pop();
-    // }
-    // cout<<endl;
-    
-    //testing sort_queue2() function
-    // queue2 = sort_queue2(queue2); //脱胎换骨
-    // cout<<"queue2 (from head to tail): ";
-    // for (int j=0; j<queue2.size(); j++)
-    // {
-    //     cout<<queue2[j]->get_customerID()<<" ";
-    // }
-
 }
-
-
 
 
 
@@ -389,7 +393,7 @@ void works()
                             queue2[i] -> reset_span_time_in_queue2(); // reset span time in queue2 as 0
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
-                                queue2[i]->set_checked(false);
+                                // queue2[i]->set_checked(false);
                                 queue1_pool.push_back(queue2[i]);
                                 cout<<"(1) promotion occur, push"<<queue2[i]->get_customerID()<<" into queue1_pool"<<endl;
                                 cout<<"erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
@@ -444,7 +448,7 @@ void works()
                             queue2[i] -> reset_span_time_in_queue2(); // reset span time in queue2 as 0
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
-                                queue2[i]->set_checked(false);
+                                // queue2[i]->set_checked(false);
                                 queue1_pool.push_back(queue2[i]);
                                 cout<<"(2) promotion occur, push "<<queue2[i]->get_customerID()<<" into queue1_pool erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                                 queue2.erase(queue2.begin()+i); //
@@ -465,10 +469,13 @@ void works()
                         sort_queue1_pool_and_push_to_queue1();  ///     BUG HERE!
                         cout<<"(4) customer comes from queue1_pool to queue1 when timer is "<< timer<<endl;
                     }
-                }
+                } //买完N张票了
 
                 cout<<"after excution |customer name:"<<queue1.front()->get_customerID()<<"| processed ticket: "<<N<<" | remain ticket:"<<queue1.front()->get_ticket_num()<<endl;
                 
+
+                
+
                 if (queue1.front()->get_times_of_run() % 2 == 0)
                 {
                     queue1.front()->plus_update_priority();  // = priority ++
@@ -484,6 +491,7 @@ void works()
                     queue1.erase(queue1.begin());
                 }else
                 {
+                    cout<<"FUCK"<<find_the_most_prior_customer_in_queue1_pool(queue1)<<endl;
                     cout<<queue1.front()->get_customerID()<<" head->tail"<<endl;
                     queue1.push_back(queue1.front());
                     queue1.erase(queue1.begin());
@@ -554,7 +562,7 @@ void works()
                         // push queue2[i] into queue1_pool
                         if(queue2[i]->get_priority()==3)  //queue2有人跳车
                         {
-                            queue2[i]->set_checked(false);
+                            // queue2[i]->set_checked(false);
                             queue1_pool.push_back(queue2[i]);
                             cout<<"(3)promotion occur! push "<<queue2[i]->get_customerID()<<" into queue1_pool and erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                             queue2.erase(queue2.begin()+i); // bug
@@ -588,19 +596,14 @@ void works()
         }else
         {
             if(!queue1.empty()||!queue2.empty()|| timer<600)
-                {
-                    cout<<"manually timer +=5"<<endl;
-                    timer += 5;   //manually update timer
-                }else if(timer>1000)
-                {
-                    cout<<"break ***"<<endl;
-                    break;
-                }
-                else
-                {
-                    cout<<"break ***"<<endl;
-                    break;
-                }
+            {
+                cout<<"manually timer +=5"<<endl;
+                timer += 5;   //manually update timer
+            }else
+            {
+                cout<<"break ***"<<endl;
+                break;
+            }
         }
         cout<<"important time in queue2:"<<timer<<endl;
        
@@ -612,7 +615,7 @@ void works()
 void output()
 {    
     int i;
-    cout<<"name   arrival   end   ready   running   waiting"<<endl;    
+    cout<<"name          arrival        end        ready        running        waiting"<<endl;    
     while (!output_queue.empty())
     {
         cout<<output_queue.front()->get_customerID()<<"         ";
