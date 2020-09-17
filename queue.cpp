@@ -32,8 +32,6 @@ vector<Customer*> sort_customer_vec_based_on_arrival_time(vector<Customer*> cust
 }
 
 
-
-
 int find_the_most_prior_customer_in_queue1_pool(vector <Customer*> queue1_pool_)  // queue1 use
 {
     int min_priority = 1000;
@@ -87,7 +85,6 @@ int find_the_most_prior_customer_in_queue1_pool(vector <Customer*> queue1_pool_)
 
 int find_the_most_prior_customer_idx(vector<Customer*> customer_vec)  // and initialise original properties
 {
-    // cout<<"q "<<q<<endl;
     int most_prior_customer_idx = find_the_most_prior_customer_in_queue1_pool(customer_vec); // push the customer with highest priority into the queue1
     cout<<"most prior customer found!  at index "<<most_prior_customer_idx<<endl;
     if (most_prior_customer_idx == -1 ||customer_vec[most_prior_customer_idx]->get_customerID()=="NULL")
@@ -107,9 +104,9 @@ int find_the_most_prior_customer_idx(vector<Customer*> customer_vec)  // and ini
 
 vector<Customer*> sort_queue2(vector<Customer*> queue2_) // sort queue2 based on ticket_num > priority > arrival_time > customerID
 {
-    // cout<<"start sorting queue2......"<<endl;
+    cout<<"start sorting queue2......"<<endl;
 
-    // cout<<"sorting queue2 based on ticket_num......"<<endl;
+    cout<<"sorting queue2 based on ticket_num......"<<endl;
 
     //check ticket_num
     for (int i0=0; i0 < queue2_.size()-1; i0++)  // queue2_.size(): global variable
@@ -118,7 +115,7 @@ vector<Customer*> sort_queue2(vector<Customer*> queue2_) // sort queue2 based on
         {
             if (queue2_[j0]->get_ticket_num() > queue2_[j0+1]->get_ticket_num())
             {
-                // cout<<"queue2 "<<queue2_[j0]->get_customerID()<<" element is < than "<<queue2_[j0+1]->get_customerID()<<endl;
+                cout<<"queue2 "<<queue2_[j0]->get_customerID()<<" element is < than "<<queue2_[j0+1]->get_customerID()<<endl;
                 swap(queue2_[j0], queue2_[j0+1]);
             }
         }
@@ -126,7 +123,7 @@ vector<Customer*> sort_queue2(vector<Customer*> queue2_) // sort queue2 based on
     
 
     //check priority
-    // cout<<"sorting queue2 based on priority......"<<endl;
+    cout<<"sorting queue2 based on priority......"<<endl;
     for (int i1=0; i1 < queue2_.size()-1; i1++)  // queue2_.size(): global variable
     {
         for(int j1=0; j1<queue2_.size()-i1-1; j1++)
@@ -140,7 +137,7 @@ vector<Customer*> sort_queue2(vector<Customer*> queue2_) // sort queue2 based on
     }
 
     //check arrival_time
-    // cout<<"sorting queue2 based on arrival_time......"<<endl;
+    cout<<"sorting queue2 based on arrival_time......"<<endl;
     for (int i2=0; i2 < queue2_.size()-1; i2++)  // queue2_.size(): global variable
     {
         for(int j2=0; j2<queue2_.size()-i2-1; j2++)
@@ -157,7 +154,7 @@ vector<Customer*> sort_queue2(vector<Customer*> queue2_) // sort queue2 based on
     }
 
     //check customer_ID
-    // cout<<"sorting queue2 based on CustomerID......"<<endl;
+    cout<<"sorting queue2 based on CustomerID......"<<endl;
     for (int i3=0; i3 < queue2_.size()-1; i3++)  // queue2_.size(): global variable
     {
         for(int j3=0; j3<queue2_.size()-i3-1; j3++)
@@ -176,27 +173,10 @@ vector<Customer*> sort_queue2(vector<Customer*> queue2_) // sort queue2 based on
         }
     }
         
-    // cout<<"finish sorting queue2"<<endl;
+    cout<<"finish sorting queue2"<<endl;
     return queue2_;
 }
 
 
 
-
-
-
-
-
-
-
-
-bool check_if_every_customer_has_same_priority(vector<Customer*> queue1)
-{
-    for (int i=0; i<queue1.size();i++)
-    {
-        if (queue1[i]->get_priority() != queue1[0]->get_priority())
-            return false;
-    }
-    return true;
-}
 

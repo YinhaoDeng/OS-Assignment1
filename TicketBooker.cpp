@@ -164,11 +164,10 @@ void initial()
 
         cout<<"index: "<<customer_arr_idx<<endl;
       
-        //cout for debugging use
         cout<<"customer_"<<customer_arr_idx<<" address:"<<&customer_vec[customer_arr_idx]<<endl;
         cout<<"Original input: \n"<<customerID<<' '<<arrival_time<<' '<<priority<<' '<<age<<' '<<ticket_num<<endl;
-        cout<<"Processed input(read from memory): \n"<<customer_vec[customer_arr_idx]->get_customerID()<<' '<<customer_vec[customer_arr_idx]->get_arrival_time()
-        <<' '<<customer_vec[customer_arr_idx]->get_priority()<<' '<<customer_vec[customer_arr_idx]->get_age()<<' '<<customer_vec[customer_arr_idx]->get_ticket_num()<<endl;
+        cout<<"Processed input(read from memory): \n"<<customer_vec[customer_arr_idx]->get_customerID()<<' '<<customer_vec[customer_arr_idx]->get_arrival_time();
+        // <<' '<<customer_vec[customer_arr_idx]->get_priority()<<' '<<customer_vec[customer_arr_idx]->get_age()<<' '<<customer_vec[customer_arr_idx]->get_ticket_num()<<endl;
 
         cout<<"------------------------------------"<<endl;
 
@@ -185,11 +184,11 @@ void initial()
     //基础sort
     customer_vec = sort_customer_vec_based_on_arrival_time(customer_vec);
     cout<<"sorted customer_vec (based on arrival_time)"<<endl;
-    for (int j=0; j<customer_vec.size(); j++)
-    {
-        cout<<"j:"<<j<<'|';
-        cout<<customer_vec[j]->get_customerID()<<" ";
-    }
+    // for (int j=0; j<customer_vec.size(); j++)
+    // {
+    //     cout<<"j:"<<j<<'|';
+    //     cout<<customer_vec[j]->get_customerID()<<" ";
+    // }
 }
 
 
@@ -202,6 +201,7 @@ void input()
 
 bool check_any_new_arrival_customer_each_5_sec()
 {
+
     if(customer_vec[0]->get_arrival_time() != timer || customer_vec.size()==0)
     {
         return false;
@@ -264,12 +264,12 @@ void sort_queue1_pool_and_push_to_queue1()
             queue1_pool[most_prior_customer_idx]->set_original_ticket_num();
             queue1_pool[most_prior_customer_idx]->set_original_priority_num();
 
-            // cout<<"most prior customer found at index "<<most_prior_customer_idx<<endl<<endl;
+            cout<<"most prior customer found at index "<<most_prior_customer_idx<<endl<<endl;
             queue1.push_back(queue1_pool[most_prior_customer_idx]);  //缓存池进queue1
-            cout<<"                     (I pushed "<<queue1_pool[most_prior_customer_idx]->get_customerID()<<" into queue1 from pool)"<<endl;
+            cout<<"                     (I pushed "<<queue1_pool[most_prior_customer_idx]->get_customerID()<<" into queue1)"<<endl;
             queue1_pool.erase(queue1_pool.begin()+most_prior_customer_idx);
 
-            // cout<<"most prior customer found!  at index "<<most_prior_customer_idx<<endl<<endl;
+            cout<<"most prior customer found!  at index "<<most_prior_customer_idx<<endl<<endl;
             //object's original variables initialisation 
             cout<<"---------------------"<<endl;
         }
@@ -277,6 +277,23 @@ void sort_queue1_pool_and_push_to_queue1()
 }
 
 
+
+void sort_queue1()
+{
+    cout<<"start sorting queue1......"<<endl;
+    
+    //check priority
+    for (int i1=0; i1 < queue1.size()-1; i1++)  // queue1.size(): global variable
+    {
+        for(int j1=0; j1<queue1.size()-i1-1; j1++)
+        {
+            if (queue1[j1]->get_priority() > queue1[j1+1]->get_priority()) //priority
+                swap(queue1[j1], queue1[j1+1]);
+        }
+    }
+        
+    cout<<"finish sorting queue1"<<endl;
+}
 
 
 void works()  
@@ -338,7 +355,7 @@ void works()
             // break;
         }else
         {
-            // cout<<"         |queue1_pool is empty.|                "<<endl;
+            cout<<"         |queue1_pool is empty.|                "<<endl;
         }
         
         
@@ -356,7 +373,7 @@ void works()
 
 
             queue1.front()->add_one_time_of_run();
-            // cout<<"times of run:"<<queue1.front()->get_times_of_run()<<endl;
+            cout<<"times of run:"<<queue1.front()->get_times_of_run()<<endl;
 
             if (queue1.front()->get_times_of_run() == 1 && queue1.front()->get_if_first_run() == false )
             {
@@ -370,15 +387,16 @@ void works()
             // sell ticket
             int N = ticket_quota(queue1.front()->get_priority());  //sell N tickets to customer
 
+
             if(queue1.front()->get_ticket_num()<=N) //ticket require < N
             {
 
 
                 cout<<"                                     CHU LAI LE: ------------------------>  "<<queue1.front()->get_customerID()<<endl;
                 int n = queue1.front()->get_ticket_num();///////////////不能缺少
-                for (int i=0; i<n; i++)
+                for (int j=0; j<n; j++)
                 {
-                    //cout<<"queue1.front()->get_ticket_num(): "<<queue1.front()->get_ticket_num()<<endl;
+                    // cout<<"queue1.front()->get_ticket_num(): "<<queue1.front()->get_ticket_num()<<endl;
                     queue1.front()->update_running_time(5);
                     queue1.front()->update_ticket_num(1);
 
@@ -394,10 +412,11 @@ void works()
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
                                 // queue2[i]->set_checked(false);
-                                queue1_pool.push_back(queue2[i]);
+                                queue1.push_back(queue2[i]);
                                 cout<<"(1) promotion occur, push"<<queue2[i]->get_customerID()<<" into queue1_pool"<<endl;
                                 cout<<"erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                                 queue2.erase(queue2.begin()+i); // bug
+                                i--;
                             }
                         }
                     }
@@ -411,9 +430,8 @@ void works()
                         sort_queue1_pool_and_push_to_queue1();
                     }
                 }
-    
                 queue1.front()->set_end(timer);
-                // cout<<"||||||customer name:"<<queue1.front()->get_customerID()<<" | remain ticket num:"<<queue1.front()->get_ticket_num()<<"| N: "<<N<<endl;
+                cout<<"||||||customer name:"<<queue1.front()->get_customerID()<<" | remain ticket num:"<<queue1.front()->get_ticket_num()<<"| N: "<<N<<endl;
                 
                 if (queue1.front()->get_times_of_run() % 2 == 0)
                 {
@@ -432,11 +450,10 @@ void works()
             }else if(queue1.front()->get_ticket_num()>N)  // ticket > N                       Normal case
             {   
               
-                for(int i=0; i<N; i++)
+                for(int j=0; j<N; j++)
                 {
                     queue1.front()->update_ticket_num(1); 
                     queue1.front()->update_running_time(5);
-
 
                     // update everyone span time in queue2 
                     for(int i=0; i<queue2.size(); i++) // start index is 0 !!!!!!!!!!
@@ -449,20 +466,21 @@ void works()
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
                                 // queue2[i]->set_checked(false);
-                                queue1_pool.push_back(queue2[i]);
+                                queue1.push_back(queue2[i]);
                                 cout<<"(2) promotion occur, push "<<queue2[i]->get_customerID()<<" into queue1_pool erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                                 queue2.erase(queue2.begin()+i); //
+                                i--;
                             }
                         }
                     }
                     
-
+                    timer += 5;  // !!!!!!!!!!!  AWESOME!!!!
                     if(check_any_new_arrival_customer_each_5_sec() == true) // somebody arrive right now
                     {
                         cout<<"(4) new customer comes in when timer is "<< timer<<endl;
                         sort_queue1_pool_and_push_to_queue1();
                     }
-                    timer += 5;  // !!!!!!!!!!!  AWESOME!!!!
+                    
 
                     if(queue1_pool.size() > 0) // somebody arrive right now
                     {
@@ -471,9 +489,9 @@ void works()
                     }
                 } //买完N张票了
 
-
-
                 cout<<"after excution |customer name:"<<queue1.front()->get_customerID()<<"| processed ticket: "<<N<<" | remain ticket:"<<queue1.front()->get_ticket_num()<<endl;
+                
+
                 
 
                 if (queue1.front()->get_times_of_run() % 2 == 0)
@@ -491,36 +509,32 @@ void works()
                     queue1.erase(queue1.begin());
                 }else
                 {
-                    
-
-                    if(find_the_most_prior_customer_in_queue1_pool(queue1) == 0 && check_if_every_customer_has_same_priority(queue1)==true)
-                    {
-
-                        cout<<"queue1 front remain the same!"<<endl;
-                        continue;
-                    }
-
-                    cout<<queue1.front()->get_customerID()<<" head->somewhere"<<endl;
-
-
+                    cout<<"FUCK"<<find_the_most_prior_customer_in_queue1_pool(queue1)<<endl;
+                    cout<<queue1.front()->get_customerID()<<" head->tail"<<endl;
                     queue1.push_back(queue1.front());
                     queue1.erase(queue1.begin());
+
+                    sort_queue1();                
                 }
                 
                 
+            }else
+            {
+                if(!queue1.empty()||!queue2.empty()|| timer<600)
+                {
+                    cout<<"manually timer +=5"<<endl;
+                    timer += 5;   //manually update timer
+                }else if(timer>1000)
+                {
+                    cout<<"break ***"<<endl;
+                    break;
+                }
+                else
+                {
+                    cout<<"break ***"<<endl;
+                    break;
+                }
             }
-            // else
-            // {
-            //     if(!queue1.empty()||!queue2.empty()|| timer<600)
-            //     {
-            //         cout<<"manually timer +=5"<<endl;
-            //         timer += 5;   //manually update timer
-            //     }else
-            //     {
-            //         cout<<"(2) break ***"<<endl;
-            //         break;
-            //     }
-            // }
             
             cout<<endl<<"important time in queue1: "<<timer<<endl;
 
@@ -530,12 +544,12 @@ void works()
         else if (queue1.size()==0 && queue2.size() >0)  //执行queue2 if queue1 is empty and queue2 has customers waiting, we excute queue2
         {
 
-            // cout<<"queue2 when timer is["<<timer<<"]::::::::::::";
+            cout<<"queue2 when timer is["<<timer<<"]::::::::::::";
             // for (int i=0; i<queue2.size(); i++)
             // {
             //     cout<<queue2[i]->get_customerID()<<" ";
             // }
-            // cout<<endl;
+            cout<<endl;
 
             // queue2.front()->add_one_time_of_run(); //BUG
 
@@ -568,6 +582,7 @@ void works()
                         // push queue2[i] into queue1_pool
                         if(queue2[i]->get_priority()==3)  //queue2有人跳车
                         {
+                            // queue2[i]->set_checked(false);
                             queue1_pool.push_back(queue2[i]);
                             cout<<"(3)promotion occur! push "<<queue2[i]->get_customerID()<<" into queue1_pool and erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                             queue2.erase(queue2.begin()+i); // bug
@@ -588,9 +603,9 @@ void works()
             {
                 queue2.front()->set_end(timer);
                 //debug use
-                // cout<<queue2.front()->get_customerID()<<" end time: "<<queue2.front()->get_end()<<endl;
-                // cout<<queue2.front()->get_customerID()<<" running time: "<<queue2.front()->get_running_time()<<endl;
-                // cout<<queue2.front()->get_customerID()<<" waiting time: "<<queue2.front()->get_waiting_time()<<endl;
+                cout<<queue2.front()->get_customerID()<<" end time: "<<queue2.front()->get_end()<<endl;
+                cout<<queue2.front()->get_customerID()<<" running time: "<<queue2.front()->get_running_time()<<endl;
+                cout<<queue2.front()->get_customerID()<<" waiting time: "<<queue2.front()->get_waiting_time()<<endl;
 
 
                 cout<<"CHU LAI LA------------------------when timer is:"<<timer<<"------>"<<queue2.front()->get_customerID()<<endl;
@@ -600,14 +615,13 @@ void works()
             }
         }else
         {
-            if(!queue1.empty()||!queue2.empty()|| timer<2200)
+            if(!queue1.empty()||!queue2.empty()|| timer<600)
             {
                 cout<<"manually timer +=5"<<endl;
                 timer += 5;   //manually update timer
-            }
-            else
+            }else
             {
-                cout<<"(1) break ***"<<endl;
+                cout<<"break ***"<<endl;
                 break;
             }
         }
@@ -621,7 +635,7 @@ void works()
 void output()
 {    
     int i;
-    cout<<"name     arrival      end     ready     running      waiting"<<endl;    
+    cout<<"name          arrival        end        ready        running        waiting"<<endl;    
     while (!output_queue.empty())
     {
         cout<<output_queue.front()->get_customerID()<<"         ";
@@ -643,7 +657,7 @@ int main(int argc,char *argv[])
     int i,j,k;
 
     freopen(argv[1], "r", stdin);  //重定向输入
-    cout<<"\n\n==================== initial ========================"<<endl;
+     cout<<"\n\n==================== initial ========================"<<endl;
     initial();        // initial data
     
     cout<<"\n\n==================== input ========================"<<endl;
