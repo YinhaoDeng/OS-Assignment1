@@ -518,22 +518,6 @@ void works()
                 }
                 
                 
-            }else
-            {
-                if(!queue1.empty()||!queue2.empty()|| timer<600)
-                {
-                    cout<<"manually timer +=5"<<endl;
-                    timer += 5;   //manually update timer
-                }else if(timer>1000)
-                {
-                    cout<<"break ***"<<endl;
-                    break;
-                }
-                else
-                {
-                    cout<<"break ***"<<endl;
-                    break;
-                }
             }
             
             cout<<endl<<"important time in queue1: "<<timer<<endl;
@@ -558,6 +542,7 @@ void works()
 
             queue2.front()->update_ticket_num(1); // 每次只卖1张票
             queue2.front()->update_running_time(5);
+            queue2.front()->reset_span_time_in_queue2();
 
             if (queue2.front()->get_if_first_run() == false)
             {
@@ -569,10 +554,11 @@ void works()
 
 
             bool if_promotion = false;  //如果晋升现象出现
-
+            
             for(int i=1; i<queue2.size(); i++) //update other customers' span time in queue2
             {
                 queue2[i]->update_span_time_in_queue2(5);
+                cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~"<<queue2[i]->get_customerID()<<" "<<queue2[i]->get_span_time_in_queue2()<<endl;
                 if(queue2[i]->get_span_time_in_queue2() == 100)
                 {   
                     queue2[i]->minus_update_priority(); // priority --
@@ -583,7 +569,8 @@ void works()
                         if(queue2[i]->get_priority()==3)  //queue2有人跳车
                         {
                             // queue2[i]->set_checked(false);
-                            queue1_pool.push_back(queue2[i]);
+                            cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~"<<queue2[0]->get_customerID()<<" "<<queue2[0]->get_span_time_in_queue2()<<endl;
+                            queue1.push_back(queue2[i]);
                             cout<<"(3)promotion occur! push "<<queue2[i]->get_customerID()<<" into queue1_pool and erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                             queue2.erase(queue2.begin()+i); // bug
                         }
@@ -615,7 +602,7 @@ void works()
             }
         }else
         {
-            if(!queue1.empty()||!queue2.empty()|| timer<600)
+            if(!queue1.empty()||!queue2.empty()|| timer<5000)
             {
                 cout<<"manually timer +=5"<<endl;
                 timer += 5;   //manually update timer
