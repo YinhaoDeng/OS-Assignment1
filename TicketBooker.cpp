@@ -412,6 +412,7 @@ void works()
                     for(int i=0; i<queue2.size(); i++) // start index is 0 !!!!!!!!!!
                     {
                         queue2[i]->update_span_time_in_queue2(5);
+                        cout<<"1"<<queue2[i]->get_customerID()<<"'s span time: "<<queue2[i]->get_span_time_in_queue2()<<endl;
                         if(queue2[i]->get_span_time_in_queue2() == 100)
                         {   
                             queue2[i]->minus_update_priority(); // priority --
@@ -464,16 +465,15 @@ void works()
                     for(int i=0; i<queue2.size(); i++) // start index is 0 !!!!!!!!!!
                     {
                         queue2[i]->update_span_time_in_queue2(5);
+                        cout<<"2"<<queue2[i]->get_customerID()<<"'s span time: "<<queue2[i]->get_span_time_in_queue2()<<endl;
                         if(queue2[i]->get_span_time_in_queue2() == 100)
                         {   
                             queue2[i]->minus_update_priority(); // priority --
                             queue2[i] -> reset_span_time_in_queue2(); // reset span time in queue2 as 0
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
-                                // queue2[i]->set_checked(false);
-                                cout<<"``````````````````"<<queue1.size()<<endl;
                                 queue1.push_back(queue2[i]);
-                                cout<<"(2) promotion occur, push "<<queue2[i]->get_customerID()<<" into queue1_pool erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
+                                cout<<"(2) promotion occur, push "<<queue2[i]->get_customerID()<<" into queue1 erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                                 queue2.erase(queue2.begin()+i); //
                                 i--;
                             }
@@ -486,9 +486,6 @@ void works()
                         cout<<"(4) new customer comes in when timer is "<< timer<<endl;
                         sort_queue1_pool_and_push_to_queue1();
                         sort_queue1(1);
-
-
-                        
                     }
                     
 
@@ -516,11 +513,9 @@ void works()
                     queue1.erase(queue1.begin());
                 }else
                 {
-                    cout<<"FUCK"<<find_the_most_prior_customer_in_queue1_pool(queue1)<<endl;
                     cout<<queue1.front()->get_customerID()<<" head->tail"<<endl;
                     queue1.push_back(queue1.front());
                     queue1.erase(queue1.begin());
-
                     sort_queue1(0);                
                 }
                 
@@ -562,7 +557,7 @@ void works()
             for(int i=1; i<queue2.size(); i++) //update other customers' span time in queue2
             {
                 queue2[i]->update_span_time_in_queue2(5);
-                cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~"<<queue2[i]->get_customerID()<<" "<<queue2[i]->get_span_time_in_queue2()<<endl;
+                cout<<"(3)"<<queue2[i]->get_customerID()<<"'s span time: "<<queue2[i]->get_span_time_in_queue2()<<endl;
                 if(queue2[i]->get_span_time_in_queue2() == 100)
                 {
                     queue2[i]->minus_update_priority(); // priority --
@@ -573,12 +568,11 @@ void works()
                         if(queue2[i]->get_priority()==3)  //queue2有人跳车
                         {
                             // queue2[i]->set_checked(false);
-                            cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~"<<queue2[0]->get_customerID()<<" "<<queue2[0]->get_span_time_in_queue2()<<endl;
                             queue1.push_back(queue2[i]);
-                            cout<<"(3)promotion occur! push "<<queue2[i]->get_customerID()<<" into queue1_pool and erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
+                            cout<<"(3)promotion occur! push "<<queue2[i]->get_customerID()<<" into queue1 and erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                             queue2.erase(queue2.begin()+i); // bug
+                            i--;
                         }
-                        //潜在bug!!!!!!!!!!!!!!!!!!!!!!!!!!!! erase野指针
                     }
                 }
             }
@@ -606,7 +600,7 @@ void works()
             }
         }else
         {
-            if(!queue1.empty()||!queue2.empty()|| timer<5000)
+            if(!queue1.empty()||!queue2.empty()|| timer<4000)
             {
                 cout<<"manually timer +=5"<<endl;
                 timer += 5;   //manually update timer
