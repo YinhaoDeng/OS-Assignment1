@@ -298,6 +298,20 @@ void sort_queue1(int star)
                 swap(queue1[j1], queue1[j1+1]);
         }
     }
+
+    //check arrival_time
+    for (int i1=star; i1 < queue1.size()-1; i1++)  // queue1.size(): global variable
+    {
+        for(int j1=star; j1<queue1.size()-i1-1; j1++)
+        {
+            if (queue1[j1]->get_priority() == queue1[j1+1]->get_priority()) //priority
+            {
+                if(queue1[j1]->get_arrival_time() > queue1[j1+1]->get_arrival_time())
+                    swap(queue1[j1], queue1[j1+1]);
+            }
+                
+        }
+    }
         
     cout<<"finish sorting queue1"<<endl;
 }
@@ -600,7 +614,7 @@ void works()
             }
         }else
         {
-            if(!queue1.empty()||!queue2.empty()|| timer<4000)
+            if(!queue1.empty()||!queue2.empty()|| timer<2000)
             {
                 cout<<"manually timer +=5"<<endl;
                 timer += 5;   //manually update timer
