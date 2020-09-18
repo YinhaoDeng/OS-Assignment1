@@ -77,7 +77,7 @@ int find_the_most_prior_customer_in_queue1_pool(vector <Customer*> queue1_pool_)
     }
     else    
     {
-        queue1_pool_.erase(queue1_pool_.begin()+min_index);
+        // queue1_pool_.erase(queue1_pool_.begin()+min_index);
         return min_index;
     }
 }

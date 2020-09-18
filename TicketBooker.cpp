@@ -254,6 +254,13 @@ void sort_queue1_pool_and_push_to_queue1()
     for (int i=0; i<size; i++)
     {
         int most_prior_customer_idx = find_the_most_prior_customer_in_queue1_pool(queue1_pool);  // queue1 use
+        if(most_prior_customer_idx <= -1)
+        {
+            cout<<queue1_pool.size()<<" "<<most_prior_customer_idx<<endl;
+            queue1_pool.erase(queue1_pool.begin()+most_prior_customer_idx);
+        }
+            
+        
         // push the customer with highest priority into the queue1
         if (most_prior_customer_idx == -1 ||queue1_pool[most_prior_customer_idx]->get_customerID()=="NULL")
         {
@@ -278,14 +285,14 @@ void sort_queue1_pool_and_push_to_queue1()
 
 
 
-void sort_queue1()
+void sort_queue1(int star)
 {
     cout<<"start sorting queue1......"<<endl;
     
     //check priority
-    for (int i1=0; i1 < queue1.size()-1; i1++)  // queue1.size(): global variable
+    for (int i1=star; i1 < queue1.size()-1; i1++)  // queue1.size(): global variable
     {
-        for(int j1=0; j1<queue1.size()-i1-1; j1++)
+        for(int j1=star; j1<queue1.size()-i1-1; j1++)
         {
             if (queue1[j1]->get_priority() > queue1[j1+1]->get_priority()) //priority
                 swap(queue1[j1], queue1[j1+1]);
@@ -439,8 +446,6 @@ void works()
                     cout<<"(<=N) "<<queue1.front()->get_customerID()<<" times_of_run is: "<<queue1.front()->get_times_of_run();
                     cout<<" and it's priority is updated! Now is "<<queue1.front()->get_priority()<<". ";
                 }
-                    
-
                 
                 cout<<"                                         pushed "<<queue1.front()->get_customerID()<<" into output_queue.";
                 output_queue.push(queue1.front()); // result goes into output_queue
@@ -466,6 +471,7 @@ void works()
                             if(queue2[i]->get_priority()==3)  //queue2有人跳车
                             {
                                 // queue2[i]->set_checked(false);
+                                cout<<"``````````````````"<<queue1.size()<<endl;
                                 queue1.push_back(queue2[i]);
                                 cout<<"(2) promotion occur, push "<<queue2[i]->get_customerID()<<" into queue1_pool erase "<<queue2[i]->get_customerID()<<" from queue2."<<endl;
                                 queue2.erase(queue2.begin()+i); //
@@ -479,6 +485,10 @@ void works()
                     {
                         cout<<"(4) new customer comes in when timer is "<< timer<<endl;
                         sort_queue1_pool_and_push_to_queue1();
+                        sort_queue1(1);
+
+
+                        
                     }
                     
 
@@ -488,10 +498,7 @@ void works()
                         cout<<"(4) customer comes from queue1_pool to queue1 when timer is "<< timer<<endl;
                     }
                 } //买完N张票了
-
                 cout<<"after excution |customer name:"<<queue1.front()->get_customerID()<<"| processed ticket: "<<N<<" | remain ticket:"<<queue1.front()->get_ticket_num()<<endl;
-                
-
                 
 
                 if (queue1.front()->get_times_of_run() % 2 == 0)
@@ -514,7 +521,7 @@ void works()
                     queue1.push_back(queue1.front());
                     queue1.erase(queue1.begin());
 
-                    sort_queue1();                
+                    sort_queue1(0);                
                 }
                 
                 
@@ -534,9 +541,7 @@ void works()
             //     cout<<queue2[i]->get_customerID()<<" ";
             // }
             cout<<endl;
-
             // queue2.front()->add_one_time_of_run(); //BUG
-
 
             queue2 = sort_queue2(queue2);
 
@@ -552,7 +557,6 @@ void works()
             }
             
 
-
             bool if_promotion = false;  //如果晋升现象出现
             
             for(int i=1; i<queue2.size(); i++) //update other customers' span time in queue2
@@ -560,7 +564,7 @@ void works()
                 queue2[i]->update_span_time_in_queue2(5);
                 cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~"<<queue2[i]->get_customerID()<<" "<<queue2[i]->get_span_time_in_queue2()<<endl;
                 if(queue2[i]->get_span_time_in_queue2() == 100)
-                {   
+                {
                     queue2[i]->minus_update_priority(); // priority --
                     queue2[i] -> reset_span_time_in_queue2(); // reset span time in queue2 as 0
                     if(queue2[i]->get_priority()==3)  //queue2有人跳车
